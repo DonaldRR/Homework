@@ -2,11 +2,11 @@ from DecisionTree import *
 import pandas as pd
 from sklearn import model_selection
 
-header = np.load('NR_names.npy')
-lst = np.load('NR_data.npy')
+df = pd.read_csv('Anuran_Calls_(MFCCs)/anuran_data.csv')
+header = df.columns
 # header = ['SepalL', 'SepalW', 'PetalL', 'PetalW', 'Class']
 # df = pd.read_csv('https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data', header=None, names=['SepalL','SepalW','PetalL','PetalW','Class'])
-# lst = df.values.tolist()
+lst = df.values.tolist()
 print('\n\n********** Building Tree ...... ***********')
 t = build_tree(lst, header)
 print('\n\n********** Decision Tree **********')
