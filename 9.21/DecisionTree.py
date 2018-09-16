@@ -141,7 +141,7 @@ def find_best_split(rows, header):
     current_uncertainty = gini(rows)
     n_features = len(rows[0]) - 1  # number of columns
 
-    for col in tqdm(range(n_features)):  # for each feature
+    for col in range(n_features):  # for each feature
 
         values = set([row[col] for row in rows])  # unique values in the column
 
@@ -213,7 +213,7 @@ class Decision_Node:
 
 ## TODO: Step 3
 def build_tree(rows, header, depth=0, id=0):
-    print('Cur depth:{}, id:{}'.format(depth, id))
+    # print('Cur depth:{}, id:{}'.format(depth, id))
     """Builds the tree.
 
     Rules of recursion: 1) Believe that it works. 2) Start by checking
