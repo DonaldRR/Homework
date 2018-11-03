@@ -5,6 +5,7 @@
 
 from __future__ import print_function
 
+import time
 import pandas as pd
 import numpy as np
 from sklearn import datasets
@@ -106,7 +107,7 @@ tuned_parameters = {
                   'random_state':[1, 2, 3]}],
                 None],
     'Gradient Boosting':[GradientBoostingClassifier(),
-          [{'loss':['deviance'],#, 'exponential'],
+          [{'loss':['deviance', 'exponential'],
             'learning_rate':[0.1, 0.05, 0.01],
             'n_estimators':[100, 200, 300],
             'max_depth':[2, 3, 4],
@@ -120,17 +121,14 @@ tuned_parameters = {
            None]
 }
 
-# We are going to limit ourselves to accuracy score, other options can be
-# seen here:
-# http://scikit-learn.org/stable/modules/model_evaluation.html#scoring-parameter
-# Some other values used are the predcision_macro, recall_macro
-scores = ['accuracy']
 
+scores = ['accuracy']
 
 print("# Tuning hyper-parameters for %s" % scores)
 print()
 
 for k, v in tuned_parameters.items():
+    t1 = time.time()
     print("# Current Model: {} ".format(k))
 
     model_name = k
@@ -141,6 +139,9 @@ for k, v in tuned_parameters.items():
     clf.fit(X_train, y_train)
 
     tuned_parameters[model_name][2] = clf
+
+    t2 = time.time()
+    print("### Run time: {}s".format(round(t2-t1, 2)))
 
 print()
 
@@ -163,35 +164,3 @@ for k, v in tuned_parameters.items():
 
 from tabulate import tabulate
 print(tabulate(results, headers=['Algorithm', 'Best Parameters', 'Accuracy', 'F1(marco)']))
-
-
-
-
-    # print("\tBest parameters set found on development set:")
-    # print()
-    # print("\t",clf.best_params_)
-    # print()
-    # print("\tGrid scores on development set:")
-    # print()
-    # means = clf.cv_results_['mean_test_score']
-    # stds = clf.cv_results_['std_test_score']
-    # for mean, std, params in zip(means, stds, clf.cv_results_['params']):
-    #     print("\t%0.3f (+/-%0.03f) for %r" % (mean, std * 2, params))
-    # print()
-    #
-    # print("\tDetailed classification report:")
-    # print()
-    # print("\tThe model is trained on the full development set.")
-    # print("\tThe scores are computed on the full evaluation set.")
-    # print()
-    # y_true, y_pred = y_test, clf.predict(X_test)
-    # print("\t",classification_report(y_true, y_pred))
-    # print("\tDetailed confusion matrix:")
-    # print("\t",confusion_matrix(y_true, y_pred))
-    # print("\tAccuracy Score: \n")
-    # print("\t",accuracy_score(y_true, y_pred))
-    #
-    # print()
-
-# Note the problem is too easy: the hyperparameter plateau is too flat and the
-# output model is the same for precision and recall with ties in quality.
