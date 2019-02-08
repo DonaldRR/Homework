@@ -1,0 +1,5 @@
+carData_path = "https://archive.ics.uci.edu/ml/machine-learning-databases/car/car.data"
+adultData_path = "https://archive.ics.uci.edu/ml/machine-learning-databases/adult/adult.data"
+irisData_path = "https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data"
+train_path = "train.csv"
+test_path = "test.csv"

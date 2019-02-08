@@ -1,0 +1,18 @@
+README
+
+There are two files for SCIKIT LAB homewrok. They are both jupyter notebook file. Detailed description is below.
+    1. Environment requires Python3.
+    2. Dependencies: numpy, pandas, sklearn, tensorflow, keras  
+    3.files
+        I.xor.ipynb
+            a) Solution for XOR problem with only one fully conncected layer as hidden layer with two nodes.
+            b) Parameters for MLPClassifier:
+                    solver='lbfgs'
+                    hidden_layer_sizes=(2)
+                    activation='logistic'
+                    alpha=0.002
+                    random_state=2
+            c)  Weights for neurons and intercept are:
+                    [array([[ 5.12522891, -5.08959333],[-5.12354702,  5.09072276]]), array([[9.34316978],[9.34208937]])]
+        II.uci.ipynb
+            a) Solution for UCI's dataset, Anuran Calls(https://archive.ics.uci.edu/ml/datasets/Anuran+Calls+%28MFCCs%29).

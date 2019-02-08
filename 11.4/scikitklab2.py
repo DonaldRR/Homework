@@ -5,6 +5,7 @@
 
 from __future__ import print_function
 
+from multiprocessing import Process
 import time
 import pandas as pd
 import numpy as np
@@ -27,7 +28,7 @@ from xgboost.sklearn import XGBClassifier
 print(__doc__)
 
 # Loading the Digits dataset
-df = pd.read_csv('anuran_data.csv')
+df = pd.read_csv('data/anuran_data.csv')
 # digits = datasets.load_digits()
 
 
@@ -54,71 +55,71 @@ tuned_parameters = {
              'kernel': ['rbf', 'poly'],
             'gamma': [1e-3, 1e-5],
             'C': [1, 10]}],
+           None],
+    'Decision Tree':[DecisionTreeClassifier(),
+          [{'criterion':['gini', 'entropy'],
+            'max_depth':[8, 12, 16, 20],
+            'min_samples_split':[2, 5, 10],
+            'min_samples_leaf':[1, 2, 4, 8],
+            'min_weight_fraction_leaf':[0., 0.01, 0.05],
+            'max_features':[None, 'sqrt', 'log2'],
+            'min_impurity_decrease':[0., 0.02, 0.05]}],
+          None],
+    'Multipler-Layer Perceptrons ':[MLPClassifier(),
+          [{'hidden_layer_sizes':[(16,16),(32,16),(16,16,8)],
+            'activation':['identity', 'relu','logistic'],
+            'alpha':[0.0001, 0.0005, 0.001],
+            'learning_rate':['adaptive', 'invscaling'],
+            'max_iter':[200, 500, 1000]}],
+          None],
+    'Gausian Naive Bayes':[GaussianNB(),
+           [{'priors':[None, [0.1]*10]}],
+           None],
+    'Logistic Regression':[LogisticRegression(),
+             [{'penalty':['l1','l2'],
+               'tol':[1e-4, 1e-5, 1e-6],
+               'C':[0.5, 1.0, 1.5],
+               'fit_intercept':[True, False],
+               'max_iter':[100, 200, 500]}],
+             None],
+    'K-Neighbors':[KNeighborsClassifier(),
+           [{'n_neighbors':[5, 10, 15],
+             'weights':['uniform', 'distance'],
+             'algorithm':['ball_tree', 'kd_tree', 'brute'],
+             'p':[1, 2]}],
+           None],
+    'Bagging':[BaggingClassifier(),
+               [{'n_estimators':[10, 15, 20],
+                 'max_samples':[0.2, 0.5, 0.8],
+                 'max_features':[1, 2, 3],
+                 'random_state':[1, 2, 3]}],
+               None],
+    'Random Forest':[RandomForestClassifier(),
+          [{'n_estimators':[10, 15, 20],
+            'criterion':['gini', 'entropy'],
+            'max_depth':[None, 10, 15],
+            'max_features':[None, 'sqrt', 'log2'],
+            'min_samples_split':[2, 5, 10]}],
+          None],
+    'AdaBoost':[AdaBoostClassifier(),
+                [{'n_estimators':[50, 80, 100],
+                  'learning_rate':[1., 0.5],
+                  'algorithm':['SAMME', 'SAMME.R'],
+                  'random_state':[1, 2, 3]}],
+                None],
+    'Gradient Boosting':[GradientBoostingClassifier(),
+          [{'loss':['deviance'],
+            'learning_rate':[0.1, 0.05, 0.01],
+            'n_estimators':[100, 200, 300],
+            'max_depth':[2, 3, 4],
+            'min_samples_split':[2, 5, 8]}],
+          None],
+    'XGBoosting':[XGBClassifier(),
+           [{'learning_rate':[0.1, 0.05, 0.02],
+             'n_estimators':[200, 300, 400],
+             'min_child_weight':[3, 4, 5],
+             'booster':['gbtree', 'gblinear', 'dart']}],
            None]
-    # 'Decision Tree':[DecisionTreeClassifier(),
-    #       [{'criterion':['gini', 'entropy'],
-    #         'max_depth':[8, 12, 16, 20],
-    #         'min_samples_split':[2, 5, 10],
-    #         'min_samples_leaf':[1, 2, 4, 8],
-    #         'min_weight_fraction_leaf':[0., 0.01, 0.05],
-    #         'max_features':[None, 'sqrt', 'log2'],
-    #         'min_impurity_decrease':[0., 0.02, 0.05]}],
-    #       None],
-    # 'Multipler-Layer Perceptrons ':[MLPClassifier(),
-    #       [{'hidden_layer_sizes':[(16,16),(32,16),(16,16,8)],
-    #         'activation':['identity', 'relu','logistic'],
-    #         'alpha':[0.0001, 0.0005, 0.001],
-    #         'learning_rate':['adaptive', 'invscaling'],
-    #         'max_iter':[200, 500, 1000]}],
-    #       None],
-    # 'Gausian Naive Bayes':[GaussianNB(),
-    #        [{'priors':[None, [0.1]*10]}],
-    #        None],
-    # 'Logistic Regression':[LogisticRegression(),
-    #          [{'penalty':['l1','l2'],
-    #            'tol':[1e-4, 1e-5, 1e-6],
-    #            'C':[0.5, 1.0, 1.5],
-    #            'fit_intercept':[True, False],
-    #            'max_iter':[100, 200, 500]}],
-    #          None],
-    # 'K-Neighbors':[KNeighborsClassifier(),
-    #        [{'n_neighbors':[5, 10, 15],
-    #          'weights':['uniform', 'distance'],
-    #          'algorithm':['ball_tree', 'kd_tree', 'brute'],
-    #          'p':[1, 2]}],
-    #        None],
-    # 'Bagging':[BaggingClassifier(),
-    #            [{'n_estimators':[10, 15, 20],
-    #              'max_samples':[0.2, 0.5, 0.8],
-    #              'max_features':[1, 2, 3],
-    #              'random_state':[1, 2, 3]}],
-    #            None],
-    # 'Random Forest':[RandomForestClassifier(),
-    #       [{'n_estimators':[10, 15, 20],
-    #         'criterion':['gini', 'entropy'],
-    #         'max_depth':[None, 10, 15],
-    #         'max_features':[None, 'sqrt', 'log2'],
-    #         'min_samples_split':[2, 5, 10]}],
-    #       None],
-    # 'AdaBoost':[AdaBoostClassifier(),
-    #             [{'n_estimators':[50, 80, 100],
-    #               'learning_rate':[1., 0.5],
-    #               'algorithm':['SAMME', 'SAMME.R'],
-    #               'random_state':[1, 2, 3]}],
-    #             None],
-    # 'Gradient Boosting':[GradientBoostingClassifier(),
-    #       [{'loss':['deviance'],
-    #         'learning_rate':[0.1, 0.05, 0.01],
-    #         'n_estimators':[100, 200, 300],
-    #         'max_depth':[2, 3, 4],
-    #         'min_samples_split':[2, 5, 8]}],
-    #       None],
-    # 'XGBoosting':[XGBClassifier(),
-    #        [{'learning_rate':[0.1, 0.05, 0.02],
-    #          'n_estimators':[200, 300, 400],
-    #          'min_child_weight':[3, 4, 5],
-    #          'booster':['gbtree', 'gblinear', 'dart']}],
-    #        None]
 }
 
 def grid(k, v):
@@ -134,13 +135,6 @@ def grid(k, v):
 
     tuned_parameters[model_name][2] = clf
 
-    # try:
-    #
-    #     model_name = k
-    #     model = v[0]
-    #     params = v[1]
-    #     clf = v[2]
-
     y_true, y_pred = y_test, clf.predict(X_test)
 
     algorithm = model_name
@@ -148,24 +142,18 @@ def grid(k, v):
     accuracy = accuracy_score(y_true=y_true, y_pred=y_pred)
     f1_macro = f1_score(y_true=y_true, y_pred=y_pred, average='macro')
 
-    np.save('{}_result'.format(k), [algorithm, best_params, accuracy, f1_macro])
+    np.save('outputs/{}_result'.format(k), [algorithm, best_params, accuracy, f1_macro])
 
     t2 = time.time()
     print("### Run time for {}: {}s".format(k, round(t2-t1, 2)))
 
-from multiprocessing import Process, Lock
 
 if __name__=='__main__':
 
     scores = ['accuracy']
     print("# Tuning hyper-parameters for %s" % scores)
 
-    results = []
 
     for k, v in tuned_parameters.items():
         p = Process(target=grid, args=(k, v))
         p.start()
-    # for k, v in tuned_parameters.items():
-
-    # from tabulate import tabulate
-    # print(tabulate(results, headers=['Algorithm', 'Best Parameters', 'Accuracy', 'F1(marco)']))

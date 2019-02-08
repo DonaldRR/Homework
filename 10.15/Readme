@@ -1,0 +1,26 @@
+Simple Aritificial Neural Network
+
+Folder Structure
+
+1.config.py
+	Dataset paths
+2.train.csv
+	Sample training data
+3.test.csv
+	Sample test data
+4.NeuralNet.py
+	ANN model implementation and executionable script
+
+Configuration
+
+1.Running environment
+	python 3.6
+2.Dependencies
+	numpy
+	pandas
+	sklearn
+
+Usage
+
+To run the simple numpy file 
+"python NeuralNet.py"

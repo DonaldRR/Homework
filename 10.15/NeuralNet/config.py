@@ -1,0 +1,5 @@
+carData_path = "carData/car.data.txt"
+adultData_path = "adultData/adult.data.txt"
+irisData_path = "irisData/iris.data.txt"
+train_path = "train.csv"
+test_path = "test.csv"

@@ -1,0 +1,23 @@
+,Algorithm,Best Parameters,Accuracy,F1
+0,Support Vector Machine,"C: 1,  degree: 3,  gamma: 1e-05
+kernel: poly,  ",0.9986101459346769,0.9886536960307453
+1,Decision Tree,"criterion: entropy,  max_depth: 8,  max_features: None
+min_impurity_decrease: 0.0,  min_samples_leaf: 1,  min_samples_split: 2
+min_weight_fraction_leaf: 0.0,  ",0.9986101459346769,0.9886536960307453
+2,Multipler-Layer Perceptrons ,"activation: logistic,  alpha: 0.0001,  hidden_layer_sizes: (16, 16)
+learning_rate: invscaling,  max_iter: 1000,  ",0.645587213342599,0.2721547525013165
+3,Gausian Naive Bayes,"priors: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1],  ",0.9874913134120917,0.9854268266762498
+4,Logistic Regression,"C: 1.5,  fit_intercept: True,  max_iter: 200
+penalty: l1,  tol: 1e-06,  ",0.9756775538568451,0.9389201685546814
+5,K-Neighbors,"algorithm: ball_tree,  n_neighbors: 5,  p: 1
+weights: distance,  ",0.9986101459346769,0.9886536960307453
+6,Bagging,"max_features: 3,  max_samples: 0.5,  n_estimators: 15
+random_state: 1,  ",0.9833217512161223,0.9633154211260215
+7,Random Forest,"criterion: gini,  max_depth: None,  max_features: None
+min_samples_split: 10,  n_estimators: 10,  ",0.9965253648366922,0.9854109068770047
+8,AdaBoost,"algorithm: SAMME.R,  learning_rate: 0.5,  n_estimators: 50
+random_state: 1,  ",0.9986101459346769,0.9886536960307453
+9,Gradient Boosting,"learning_rate: 0.1,  loss: deviance,  max_depth: 3
+min_samples_split: 5,  n_estimators: 100,  ",0.9986101459346769,0.9886536960307453
+10,XGBoosting,"booster: gbtree,  learning_rate: 0.1,  min_child_weight: 3
+n_estimators: 200,  ",0.9979152189020153,0.9879201249660483
